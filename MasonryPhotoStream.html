@@ -1,25 +1,102 @@
 <html>
 <head>
+  <link rel="stylesheet" type="text/css" href="./css/main.css" />
 </head>
 <body>
     <div class="topbar">
-        <div id="num-favorites" class="topbar-num"></div>
+        <span class="app-title">Number of Favorites:</span>
+        <span id="num-favorites" class="topbar-num">0</span>
     </div>
     <div id="photos"></div>
 </body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="./scripts/masonry.pkgd.min.js"></script>
     <script src="./scripts/500pxApi.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="./scripts/masonry.pkgd.min.js"></script>
     <script>
-        window.onload= function(){
-            var container = $('#photos');
-            
-            //setup msnry layout
-            var msnry = new Masonry( container[0], {
-              // options...
-              itemSelector: '.photo',
-              columnWidth: 200
-            });            
-       }
+        
+
+      var _container,
+          _columnWidth = 200,
+          //setup msnry layout
+          _msnry
+          //start with first page
+          _curPage = 1,
+          
+          _favoriteCounter = 0; 
+
+      //init 500px api
+      _500px.init({
+        sdk_key: '86d59c0fecdbd89ccbc4759fe02f3f4903bd5dc4'
+      });
+      
+      function getMorePhotos(container, curpage){
+          
+          var 
+              allPhotos = [],
+              fragment,
+              height,
+              photo,
+              widthRatio;
+
+          // Get photos
+          _500px.api('/photos', { feature: 'popular', page: curpage }, function (response) {
+              $.each(response.data.photos, function () {
+                  
+
+                  widthRatio = (_columnWidth-3)  / this.width;
+                  height = (this.height * widthRatio);
+
+                 // console.log("owidth: " + this.width + " width: " + (_columnWidth-3)  );
+                 // console.log("oheight: " + this.height + " height: " + height );
+
+                  photo = $("<div>", {
+                      class: "photo",
+                      id: this.id,
+                      style: 'height:' + (height + 50) + 'px'
+                    })
+                    .append("<div class='count-hover'><span>" + this.times_viewed + "</span></div>")
+                    .append($("<div>")
+                    .append($("<img>", {
+                      src: this.image_url,
+                      style: 'height:' + height + 'px; width:' + (_columnWidth-3) + 'px'
+                    })))
+                    .append("<span class='photo-title'>" + this.name + "</span>");
+
+                  _container.append(photo);
+
+                  allPhotos.push(photo[0]);
+              });
+              _msnry.appended(allPhotos);
+          });
+
+          return curpage + 1;
+      }
+
+      function photoClicked(ev, el){
+        var cont = $(ev.currentTarget);
+        if(cont.hasClass("active")){
+          cont.removeClass("active");  
+          _favoriteCounter -= 1;
+        } else {
+          cont.addClass("active");
+          _favoriteCounter += 1;
+        }
+        $("#num-favorites").html(_favoriteCounter);
+      }
+
+      window.onload= function(){
+
+        _container = $("#photos");
+        _msnry = new Masonry( _container[0], {
+            // options...
+            itemSelector: '.photo',
+            columnWidth: _columnWidth
+          });
+
+        _container.on('click', '.photo', photoClicked);
+
+        _curPage = getMorePhotos(_container, _curPage);
+
+      }
     </script>
 </html>

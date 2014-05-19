@@ -1,0 +1,41 @@
+.topbar{
+    top: 0px;
+    height: 45px;
+    background-color: #00E5EE;
+    color: white;
+    width: 100%;
+    z-index: 10;
+    position: fixed;
+    text-align: right;
+}
+.topbar:hover{
+    background-color: black;
+}
+
+.topbar-num{
+    margin-right: 50px;
+}
+
+#photos{
+    margin: 52px auto 0px auto;
+}
+
+.photo {
+    background-color: white;
+    border: solid 1px black;
+    margin: 2px auto 2px auto;
+}
+.photo.active {
+    background-color: purple;
+}
+.count-hover {
+    position: absolute;
+    float: left;
+    width: 100%;
+    visibility: hidden;
+    height: 100%;
+    top: 0px;
+}
+.photo:hover > .count-hover{
+    visibility: visible;
+}
