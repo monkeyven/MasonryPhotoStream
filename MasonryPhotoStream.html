@@ -1,0 +1,25 @@
+<html>
+<head>
+</head>
+<body>
+    <div class="topbar">
+        <div id="num-favorites" class="topbar-num"></div>
+    </div>
+    <div id="photos"></div>
+</body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="./scripts/masonry.pkgd.min.js"></script>
+    <script src="./scripts/500pxApi.js"></script>
+    <script>
+        window.onload= function(){
+            var container = $('#photos');
+            
+            //setup msnry layout
+            var msnry = new Masonry( container[0], {
+              // options...
+              itemSelector: '.photo',
+              columnWidth: 200
+            });            
+       }
+    </script>
+</html>
