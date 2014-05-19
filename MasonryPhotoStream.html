@@ -39,16 +39,13 @@
               widthRatio;
 
           // Get photos
-          _500px.api('/photos', { feature: 'popular', page: curpage }, function (response) {
+          _500px.api('/photos', { feature: 'popular', page: curpage, image_size: 4 }, function (response) {
               $.each(response.data.photos, function () {
                   
 
                   widthRatio = (_columnWidth-3)  / this.width;
                   height = (this.height * widthRatio);
-
-                 // console.log("owidth: " + this.width + " width: " + (_columnWidth-3)  );
-                 // console.log("oheight: " + this.height + " height: " + height );
-
+                 
                   photo = $("<div>", {
                       class: "photo",
                       id: this.id,
@@ -86,7 +83,7 @@
 
       function scrollCheck(ev){
         if($(window).scrollTop() + screen.height > getDocHeight() - 50) {
-          getMorePhotos(_container, _curPage);
+          _curPage = getMorePhotos(_container, _curPage);
         }
       }
 
