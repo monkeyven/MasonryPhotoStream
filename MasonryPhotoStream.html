@@ -84,6 +84,22 @@
         $("#num-favorites").html(_favoriteCounter);
       }
 
+      function scrollCheck(ev){
+        if($(window).scrollTop() + screen.height > getDocHeight() - 50) {
+          getMorePhotos(_container, _curPage);
+        }
+      }
+
+      //http://james.padolsey.com/javascript/get-document-height-cross-browser/
+      function getDocHeight() {
+          var D = document;
+          return Math.max(
+              D.body.scrollHeight, D.documentElement.scrollHeight,
+              D.body.offsetHeight, D.documentElement.offsetHeight,
+              D.body.clientHeight, D.documentElement.clientHeight
+          );
+      }
+
       window.onload= function(){
 
         _container = $("#photos");
@@ -94,6 +110,7 @@
           });
 
         _container.on('click', '.photo', photoClicked);
+        $(window).scroll(scrollCheck);
 
         _curPage = getMorePhotos(_container, _curPage);
 

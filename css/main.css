@@ -8,9 +8,6 @@
     position: fixed;
     text-align: right;
 }
-.topbar:hover{
-    background-color: black;
-}
 
 .topbar-num{
     margin-right: 50px;
@@ -35,6 +32,7 @@
     visibility: hidden;
     height: 100%;
     top: 0px;
+    text-align: center;
 }
 .photo:hover > .count-hover{
     visibility: visible;
