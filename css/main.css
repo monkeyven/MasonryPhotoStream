@@ -55,3 +55,6 @@
 .photo:hover > .count-hover{
     visibility: visible;
 }
+.photo.active:hover > .count-hover{
+    color: purple;
+}
