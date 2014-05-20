@@ -26,6 +26,14 @@
 .photo.active {
     background-color: purple;
 }
+
+.photo-title{
+    margin-top: 8px;
+    text-align: center;
+    width: 100%;
+    font-size: 125%;
+}
+
 .count-hover {
     /*positioning*/
     position: absolute;
@@ -38,7 +46,7 @@
     visibility: hidden;
 
     /* text  */
-    font-size: 150%;
+    font-size: 200%;
     text-align: center;
     padding-top: 50px;
     color: white;

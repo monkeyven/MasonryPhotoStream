@@ -46,44 +46,52 @@ function app(container, columnwidth, scrollcontainer) {
         _curPage = getMorePhotos(_container, _curPage);
     }
     
+    //TODO: change column width on the fly
+    //self.changeColumnWidth(columnwidth){}
+
     //retrieve more photos from 500px api
     function getMorePhotos(container, curpage){
       
       var allPhotos = [],
-          fragment,
-          height,
-          photo,
-          widthRatio;
+          fragments = [],
+          photo;
 
       // Get photos
       _500px.api('/photos', { feature: 'popular', page: curpage, image_size: 4 }, function (response) {
-          $.each(response.data.photos, function () {
+            $.each(response.data.photos, function () {
               
-
-              widthRatio = (_columnWidth-3)  / this.width;
-              height = (this.height * widthRatio);
-             
-              photo = $("<div>", {
-                  class: "photo",
-                  id: this.id,
-                  style: 'height:' + (height + 50) + 'px'
-                })
-                .append("<div class='count-hover'><span>" + this.times_viewed + "</span></div>")
-                .append($("<div>")
-                .append($("<img>", {
-                  src: this.image_url,
-                  style: 'height:' + height + 'px; width:' + (_columnWidth-3) + 'px'
-                })))
-                .append("<span class='photo-title'>" + this.name + "</span>");
-
-              _container.append(photo);
-
-              allPhotos.push(photo[0]);
-          });
+                var photo = createPhotoContainer(this);
+                //add to the dom
+                fragments.push(photo);
+                //add to masonry styling array
+                allPhotos.push(photo[0]);
+            });
+           _container.append(fragments);
+           //add array all at once
           _msnry.appended(allPhotos);
       });
 
       return curpage + 1;
+    }
+
+    function createPhotoContainer(photo){
+        var photoDom,
+            widthRatio = (_columnWidth-3)  / photo.width,
+            height = (photo.height * widthRatio);
+        photoDom = $("<div>", {
+                  class: "photo",
+                  id: photo.id,
+                  style: 'height:' + (height + 50) + 'px'
+                })
+                .append("<div class='count-hover'><span>" + photo.times_viewed + "</span></div>")
+                .append($("<div>")
+                .append($("<img>", {
+                  src: photo.image_url,
+                  style: 'height:' + height + 'px; width:' + (_columnWidth-3) + 'px'
+                })))
+                .append("<div class='photo-title'>" + photo.name + "</div>");
+
+        return photoDom;
     }
 
     //if we click a photo we want to favorite it
