@@ -7,6 +7,7 @@
     z-index: 10;
     position: fixed;
     text-align: right;
+    margin-left: -8px;
 }
 
 .topbar-num{
@@ -26,13 +27,22 @@
     background-color: purple;
 }
 .count-hover {
+    /*positioning*/
     position: absolute;
     float: left;
     width: 100%;
-    visibility: hidden;
     height: 100%;
     top: 0px;
+
+    /*  changes on hover */
+    visibility: hidden;
+
+    /* text  */
+    font-size: 150%;
     text-align: center;
+    padding-top: 50px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 .photo:hover > .count-hover{
     visibility: visible;
